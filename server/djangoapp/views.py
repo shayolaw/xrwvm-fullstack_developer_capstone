@@ -1,12 +1,12 @@
-from django.shortcuts import get_object_or_404, redirect
-from django.http import JsonResponse, HttpResponse
+# from django.shortcuts import get_object_or_404, redirect
+from django.http import JsonResponse
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
-from django.contrib import messages
+# from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 import logging
 import json
-from datetime import datetime
+# from datetime import datetime
 
 from .models import CarMake, CarModel
 from .populate import initiate
@@ -109,7 +109,9 @@ def get_dealerships(request, state="All"):
 def get_dealer_reviews(request, dealer_id):
     """Retrieve dealer reviews with sentiment analysis."""
     if not dealer_id:
-        return JsonResponse({"status": 400, "message": "Bad Request"}, status=400)
+        return JsonResponse({"status": 400,
+        "message": "Bad Request"},
+        status=400)
 
     endpoint = f"/fetchReviews/dealer/{dealer_id}"
     reviews = get_request(endpoint)
@@ -124,7 +126,8 @@ def get_dealer_reviews(request, dealer_id):
 def get_dealer_details(request, dealer_id):
     """Fetch specific dealer details."""
     if not dealer_id:
-        return JsonResponse({"status": 400, "message": "Bad Request"}, status=400)
+        return JsonResponse({"status": 400,
+        "message": "Bad Request"}, status=400)
 
     endpoint = f"/fetchDealer/{dealer_id}"
     dealership = get_request(endpoint)
