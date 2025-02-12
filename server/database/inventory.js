@@ -1,30 +1,29 @@
-const { Int32 } = require('mongodb');
-const mongoose = require('mongoose');
+// This avoids destructuring and const by using var and normal requires
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-const Schema = mongoose.Schema;
-
-const cars = new Schema({
-dealer_id: {
-    type: Number,
-    required: true
-},
-make: {
-    type: String,
-    required: true
-  },
-model: {
-    type: String,
-    required: true
-  },
-bodyType: {
-    type: String,
-    required: true
-  },
-year: {
+var cars = new Schema({
+  dealer_id: {
     type: Number,
     required: true
   },
-mileage: {
+  make: {
+    type: String,
+    required: true
+  },
+  model: {
+    type: String,
+    required: true
+  },
+  bodyType: {
+    type: String,
+    required: true
+  },
+  year: {
+    type: Number,
+    required: true
+  },
+  mileage: {
     type: Number,
     required: true
   }

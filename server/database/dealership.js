@@ -1,13 +1,13 @@
-const mongoose = require('mongoose');
+var mongoose = require('mongoose');
 
-const Schema = mongoose.Schema;
+var Schema = mongoose.Schema;
 
-const dealerships = new Schema({
-	id: {
+var dealerships = new Schema({
+  id: {
     type: Number,
-    required: true,
-	},
-	city: {
+    required: true
+  },
+  city: {
     type: String,
     required: true
   },
@@ -32,7 +32,7 @@ const dealerships = new Schema({
     required: true
   },
   short_name: {
-    type: String,
+    type: String
   },
   full_name: {
     type: String,
