@@ -25,7 +25,10 @@ def login_user(request):
         password = data.get("password")
 
         user = authenticate(username=username, password=password)
-        response_data = {"userName": username, "status": "Authenticated"} if user else {"userName": username}
+        response_data = {
+            "userName": username,
+            "status": "Authenticated" if user else "Failed",
+        }
 
         if user:
             login(request, user)
@@ -47,13 +50,14 @@ def logout_request(request):
 
 def get_cars(request):
     """Retrieve car models and manufacturers."""
-    count = CarMake.objects.count()
-
-    if count == 0:
+    if CarMake.objects.count() == 0:
         initiate()
 
     car_models = CarModel.objects.select_related("car_make")
-    cars = [{"CarModel": car_model.name, "CarMake": car_model.car_make.name} for car_model in car_models]
+    cars = [
+        {"CarModel": car_model.name, "CarMake": car_model.car_make.name}
+        for car_model in car_models
+    ]
 
     return JsonResponse({"CarModels": cars})
 
@@ -70,12 +74,18 @@ def registration(request):
         email = data.get("email")
 
         if User.objects.filter(username=username).exists():
-            return JsonResponse({"userName": username, "error": "Already Registered"}, status=400)
+            return JsonResponse(
+                {"userName": username, "error": "Already Registered"},
+                status=400,
+            )
 
-        # Create user
+        # Create and login user
         user = User.objects.create_user(
-            username=username, first_name=first_name,
-            last_name=last_name, password=password, email=email
+            username=username,
+            first_name=first_name,
+            last_name=last_name,
+            password=password,
+            email=email,
         )
         login(request, user)
 
@@ -90,7 +100,7 @@ def registration(request):
 
 def get_dealerships(request, state="All"):
     """Fetch list of dealerships."""
-    endpoint = f"/fetchDealers/{state}" if state != "All" else "/fetchDealers"
+    endpoint = "/fetchDealers" if state == "All" else f"/fetchDealers/{state}"
     dealerships = get_request(endpoint)
 
     return JsonResponse({"status": 200, "dealers": dealerships})
@@ -134,7 +144,11 @@ def add_review(request):
         return JsonResponse({"status": 200})
 
     except json.JSONDecodeError:
-        return JsonResponse({"status": 400, "message": "Invalid JSON format"}, status=400)
+        return JsonResponse(
+            {"status": 400, "message": "Invalid JSON format"}, status=400
+        )
     except Exception as e:
         logger.error(f"Error posting review: {e}")
-        return JsonResponse({"status": 401, "message": "Error in posting review"}, status=401)
+        return JsonResponse(
+            {"status": 401, "message": "Error in posting review"}, status=401
+        )
