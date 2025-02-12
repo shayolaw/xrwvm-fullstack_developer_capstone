@@ -25,7 +25,7 @@ def get_request(endpoint, **kwargs):
         # Perform the GET request
         response = requests.get(request_url)
         # Raise an error for HTTP 4xx/5xx responses
-        response.raise_for_status()  
+        response.raise_for_status()
 
         return response.json()
 
