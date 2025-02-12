@@ -29,11 +29,14 @@ class CarModel(models.Model):
         max_length=10,
         choices=CAR_TYPES,
         default='SUV',
-         verbose_name="Car Type"
+        verbose_name="Car Type"
     )
     year = models.IntegerField(
         default=2023,
-        validators=[MinValueValidator(2015), MaxValueValidator(2023)],
+        validators=[
+            MinValueValidator(2015),
+            MaxValueValidator(2023)
+        ],
         verbose_name="Manufacturing Year",
     )
 

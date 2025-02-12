@@ -8,7 +8,9 @@ load_dotenv()
 
 # Get backend and sentiment analyzer URLs with fallbacks
 backend_url = os.getenv("backend_url", "http://localhost:3030")
-sentiment_analyzer_url = os.getenv("sentiment_analyzer_url", "http://localhost:5050/")
+sentiment_analyzer_url = os.getenv(
+    "sentiment_analyzer_url", "http://localhost:5050/"
+)
 
 
 def get_request(endpoint, **kwargs):
@@ -34,7 +36,8 @@ def get_request(endpoint, **kwargs):
 def analyze_review_sentiments(text):
     """Analyze sentiment of a given text using the sentiment analyzer API."""
     try:
-        request_url = f"{sentiment_analyzer_url}analyze/{urllib.parse.quote(text)}"
+        request_url = f"{sentiment_analyzer_url}analyze/"
+        request_url += urllib.parse.quote(text)
         response = requests.get(request_url)
         response.raise_for_status()
 

@@ -12,6 +12,7 @@ from .restapis import get_request, analyze_review_sentiments, post_review
 # Logger instance
 logger = logging.getLogger(__name__)
 
+
 @csrf_exempt
 def login_user(request):
     """Handle user login."""
