@@ -1,12 +1,9 @@
-# from django.shortcuts import get_object_or_404, redirect
 from django.http import JsonResponse
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
-# from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 import logging
 import json
-# from datetime import datetime
 
 from .models import CarMake, CarModel
 from .populate import initiate
@@ -14,7 +11,6 @@ from .restapis import get_request, analyze_review_sentiments, post_review
 
 # Logger instance
 logger = logging.getLogger(__name__)
-
 
 @csrf_exempt
 def login_user(request):
@@ -75,8 +71,7 @@ def registration(request):
 
         if User.objects.filter(username=username).exists():
             return JsonResponse(
-                {"userName": username, "error": "Already Registered"},
-                status=400,
+                {"userName": username, "error": "Already Registered"}, status=400
             )
 
         # Create and login user
@@ -100,7 +95,11 @@ def registration(request):
 
 def get_dealerships(request, state="All"):
     """Fetch list of dealerships."""
-    endpoint = "/fetchDealers" if state == "All" else f"/fetchDealers/{state}"
+    endpoint = (
+        "/fetchDealers"
+        if state == "All"
+        else f"/fetchDealers/{state}"
+    )
     dealerships = get_request(endpoint)
 
     return JsonResponse({"status": 200, "dealers": dealerships})
@@ -109,9 +108,9 @@ def get_dealerships(request, state="All"):
 def get_dealer_reviews(request, dealer_id):
     """Retrieve dealer reviews with sentiment analysis."""
     if not dealer_id:
-        return JsonResponse({"status": 400,
-        "message": "Bad Request"},
-        status=400)
+        return JsonResponse(
+            {"status": 400, "message": "Bad Request"}, status=400
+        )
 
     endpoint = f"/fetchReviews/dealer/{dealer_id}"
     reviews = get_request(endpoint)
@@ -126,8 +125,9 @@ def get_dealer_reviews(request, dealer_id):
 def get_dealer_details(request, dealer_id):
     """Fetch specific dealer details."""
     if not dealer_id:
-        return JsonResponse({"status": 400,
-        "message": "Bad Request"}, status=400)
+        return JsonResponse(
+            {"status": 400, "message": "Bad Request"}, status=400
+        )
 
     endpoint = f"/fetchDealer/{dealer_id}"
     dealership = get_request(endpoint)
@@ -138,7 +138,9 @@ def get_dealer_details(request, dealer_id):
 def add_review(request):
     """Submit a new review."""
     if request.user.is_anonymous:
-        return JsonResponse({"status": 403, "message": "Unauthorized"}, status=403)
+        return JsonResponse(
+            {"status": 403, "message": "Unauthorized"}, status=403
+        )
 
     try:
         data = json.loads(request.body)
